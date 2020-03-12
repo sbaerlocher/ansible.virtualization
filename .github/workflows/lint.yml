@@ -9,7 +9,8 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Yaml Lint
-        run: |
-          pip3 install yamllint
-          yamllint .
+      - name: Install Yaml Lint
+        run: sudo pip3 install yamllint
+
+      - name: Run Yaml Lint
+        run: yamllint .
