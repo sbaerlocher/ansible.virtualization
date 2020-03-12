@@ -1,0 +1,6 @@
+---
+# defaults file for vagrant
+
+# here you can specify the version to be installed.
+# By default, the role itself searches for the latest version.
+vagrant_version: '{{ current_version }}'

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <title>My Docs</title>
+    <link rel="stylesheet" href="https://unpkg.com/docute@4/dist/docute.css" />
+  </head>
+
+  <body>
+    <div id="docute"></div>
+    <script src="https://unpkg.com/docute@4/dist/docute.js"></script>
+    <script>
+      new Docute({
+        target: '#docute',
+        title: 'Ansible Collection for virtualization functions',
+        sourcePath:
+          'https://raw.githubusercontent.com/sbaerlocher/ansible.virtualization/master',
+
+        //  router: { mode: 'history' },
+        nav: [
+          {
+            title: 'Home',
+            link: '/'
+          },
+          {
+            title: 'GitHub',
+            link: 'https://github.com/sbaerlocher/ansible.virtualization'
+          },
+          {
+            title: 'Ansible Galaxy',
+            link: 'https://galaxy.ansible.com/sbaerlocher/virtualization'
+          }
+        ],
+        overrides: {
+          '/': {
+            language: 'English' // Used by the language dropdown menu in the sidebar
+          }
+        },
+        // Use `versions` option to add a version selector
+        // In the sidebar
+        versions: {
+          Latest: {
+            link: '/'
+          }
+        },
+        sidebar: [
+          // A sidebar item, with child links
+          {
+            title: 'Roles',
+            children: [
+              {
+                title: 'Packer',
+                link: '/roles/packer/README'
+              },
+              {
+                title: 'Vagrant',
+                link: '/roles/vagrant/README'
+              },
+              {
+                title: 'Virtio',
+                link: '/roles/virtio/README'
+              },
+              {
+                title: 'Virtualbox',
+                link: '/roles/virtualbox/README'
+              },
+              {
+                title: 'Virtualbox Extension Pack',
+                link: '/roles/virtualbox_extension_pack/README'
+              },
+              {
+                title: 'Virtualbox Guest Additions',
+                link: '/roles/virtualbox_guest_additions/README'
+              }
+            ]
+          }
+        ],
+        footer: `
+      <div style="border-top:1px solid var(--border-color);padding-top:30px;margin: 40px 0;color:#999999;">
+      &copy; ${new Date().getFullYear()} sbaerlocher. Released under MIT license.
+      </div>
+      `
+      });
+    </script>
+  </body>
+</html>

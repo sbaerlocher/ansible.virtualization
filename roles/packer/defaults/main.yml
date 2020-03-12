@@ -1,0 +1,13 @@
+---
+# defaults file for packer
+
+# Here you can specify the version to be installed.
+# By default, the role itself searches for the latest version.
+packer_version: '{{ current_version }}'
+
+# This is the path where packer should be installed.
+# By default it is installed under the following path.
+#
+# Linux: /usr/local/bin
+# Windows: C:\\Program Files\\HashiCorp\\Packer\\bin
+packer_path: '{{ __packer_path }}'

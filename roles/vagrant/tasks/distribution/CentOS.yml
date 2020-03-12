@@ -1,0 +1,8 @@
+---
+# tasks file for vagrant
+
+- name: 'CentOS : Install Vagrant'
+  yum:
+    name: 'https://releases.hashicorp.com/vagrant/{{ vagrant_version }}/vagrant_{{ vagrant_version }}_x86_64.rpm'
+    allow_downgrade: true
+    state: present

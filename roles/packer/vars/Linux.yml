@@ -1,0 +1,4 @@
+---
+# vars file for packer
+
+__packer_path: /usr/local/bin

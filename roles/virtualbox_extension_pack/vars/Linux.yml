@@ -1,0 +1,4 @@
+---
+# vars file for virtualbox_extension_pack
+
+__virtualbox_extension_pack_dest: '/tmp/Oracle_VM_VirtualBox_Extension_Pack-{{ current_version }}.vbox-extpack'

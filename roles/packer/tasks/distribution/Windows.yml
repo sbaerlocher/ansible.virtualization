@@ -1,0 +1,22 @@
+---
+# tasks file for packer
+
+- name: 'Windows : Download packer'
+  win_get_url:
+    url: https://releases.hashicorp.com/packer/{{ packer_version }}/packer_{{ packer_version }}_windows_amd64.zip
+    dest: '%TEMP%\packer_{{ packer_version }}_windows_amd64.zip'
+
+- name: 'Windows : Create packer folder'
+  win_file:
+    path: '{{ packer_path }}'
+    state: directory
+
+- name: 'Windows : Install packer'
+  win_unzip:
+    src: '%TEMP%\packer_{{ packer_version }}_windows_amd64.zip'
+    dest: '{{ packer_path }}'
+    creates: '{{ packer_path }}\packer.exe'
+
+- name: 'Windows : Add packer to PATH'
+  win_path:
+    elements: '{{ packer_path }}'

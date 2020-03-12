@@ -1,0 +1,13 @@
+---
+# defaults file for virtualbox
+
+# Here you can specify the version to be installed.
+# By default, the role itself searches for the latest version.
+virtualbox_version: '{{ current_version }}'
+
+# Repository url from where virualbox can be installed.
+virtualbox_repository: 'https://download.virtualbox.org/virtualbox'
+
+# Version of Virtualbox that is to be installed.
+# By default, it chooses the latest version.
+virtualbox_packages: 'virtualbox-{{ virtualbox_version[:-2] }}'

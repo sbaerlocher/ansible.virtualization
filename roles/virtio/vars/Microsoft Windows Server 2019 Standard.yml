@@ -1,0 +1,4 @@
+---
+# vars file for virtio
+
+virtio_driver_directory: 2k19
