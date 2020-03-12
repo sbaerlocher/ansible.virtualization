@@ -1,0 +1,18 @@
+---
+namespace: 'sbaerlocher'
+name: 'virtualization'
+version: 0.0.1
+readme: README.md
+authors:
+  - 'Simon Baerlocher (https://sbaerlocher.ch)'
+description: 'Ansible Collection for virtualization.'
+license:
+  - MIT
+license_file: 'LICENSE'
+tags:
+  - virtualization
+dependencies: {}
+repository: 'https://www.github.com/sbaerlocher/ansible.virtualization'
+documentation: 'https://sbaerlocher.github.io/ansible.virtualization'
+homepage: 'https://sbaerlocher.ch/projects/ansible.virtualization'
+issues: 'https://www.github.com/sbaerlocher/ansible.virtualization/issues'
