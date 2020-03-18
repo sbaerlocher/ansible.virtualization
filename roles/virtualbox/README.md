@@ -17,7 +17,7 @@ virtualbox_version: '{{ current_version }}'
 
 ### virtualbox_repository
 
-Repository url from where virualbox can be installed.
+Repository url from where Virtualbox can be installed.
 
 ```yml
 virtualbox_repository: 'https://download.virtualbox.org/virtualbox'
