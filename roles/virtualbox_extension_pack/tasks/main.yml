@@ -1,0 +1,51 @@
+---
+# tasks file for virtualbox_extension_pack
+
+- name: add OS specific variables
+  include_vars: '{{ loop_vars }}'
+  with_first_found:
+    - files:
+        - '{{ distribution }}-{{ distribution_verion }}.yml'
+        - '{{ distribution }}-{{ distribution_major_version }}.yml'
+        - '{{ distribution }}.yml'
+        - '{{ ansible_os_family }}.yml'
+        - '{{ ansible_system }}.yml'
+        - 'defaults.yml'
+      paths:
+        - 'vars'
+  loop_control:
+    loop_var: loop_vars
+  vars:
+    distribution: '{{ ansible_distribution }}'
+    distribution_verion: '{{ ansible_distribution_version }}'
+    distribution_major_version: '{{ ansible_distribution_major_version }}'
+
+- name: Search current virtualbox version
+  uri:
+    url: https://release-monitoring.org/api/project/14449
+    return_content: true
+  register: register_version
+  delegate_to: localhost
+
+- name: Set current virtualbox version
+  set_fact:
+    current_version: "{{ register_version.json['version'] }}"
+
+- name: include distribution tasks
+  include_tasks: '{{ loop_distribution }}'
+  with_first_found:
+    - files:
+        - '{{ distribution }}-{{ distribution_verion }}.yml'
+        - '{{ distribution }}-{{ distribution_major_version }}.yml'
+        - '{{ distribution }}.yml'
+        - '{{ ansible_os_family }}.yml'
+        - '{{ ansible_system }}.yml'
+        - 'defaults.yml'
+      paths:
+        - 'distribution'
+  loop_control:
+    loop_var: loop_distribution
+  vars:
+    distribution: '{{ ansible_distribution }}'
+    distribution_verion: '{{ ansible_distribution_version }}'
+    distribution_major_version: '{{ ansible_distribution_major_version }}'

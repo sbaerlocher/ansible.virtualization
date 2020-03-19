@@ -1,0 +1,59 @@
+---
+# tasks file for virtualbox_guest_additions
+
+- name: Search current virtualbox guest additions version
+  win_uri:
+    url: https://release-monitoring.org/api/v2/projects/?name=virtualbox
+    return_content: true
+  register: register_version
+
+- name: Set current virtualbox guest additions version
+  set_fact:
+    current_version: "{{ register_version.json['items'][0]['version'] }}"
+
+- block:
+    - name: Download iso file if needed
+      win_get_url:
+        url: '{{ virtualbox_guest_additions_download_url }}'
+        dest: '{{ virtualbox_guest_additions_iso_file }}'
+
+    - name: Mount iso
+      win_disk_image:
+        image_path: '{{ virtualbox_guest_additions_iso_file }}'
+        state: present
+      register: register_disk_image
+
+    - name: Ensure virtualbox certs installed
+      win_certificate_store:
+        path: '{{ register_disk_image.mount_path }}cert\{{ item }}'
+        state: present
+        key_storage: machine
+        store_name: TrustedPublisher
+      with_items:
+        - vbox-sha256.cer
+        - vbox-sha1.cer
+
+    - name: Ensure virtualbox guest additions installed
+      win_package:
+        path: '{{ register_disk_image.mount_path }}VBoxWindowsAdditions.exe'
+        creates_path: 'C:\Program files\Oracle\VirtualBox'
+        arguments:
+          - /S
+
+  always:
+    - name: Unmount iso
+      win_disk_image:
+        image_path: '{{ virtualbox_guest_additions_iso_file }}'
+        state: absent
+
+    - name: Remove iso file
+      win_file:
+        path: '{{ virtualbox_guest_additions_iso_file }}'
+        state: absent
+
+    - name: Remove Start Menu folder
+      win_file:
+        path: 'C:\Users\vagrant\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Oracle VM VirtualBox Guest Additions'
+        state: absent
+
+  when: ansible_virtualization_type == "VirtualBox"

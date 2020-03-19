@@ -1,0 +1,144 @@
+---
+# tasks file for virtio
+
+- name: add OS specific variables
+  include_vars: '{{ item }}'
+  with_first_found:
+    - files:
+        - '{{ ansible_distribution }}-{{ ansible_distribution_version }}.yml'
+        - '{{ ansible_distribution }}.yml'
+        - '{{ ansible_os_family }}.yml'
+        - 'defaults.yml'
+      paths:
+        - 'vars'
+
+- name: Search current virtualbox version
+  uri:
+    url: https://release-monitoring.org/api/project/84598
+    return_content: true
+  register: register_version
+  delegate_to: localhost
+
+- name: Set current virtualbox version
+  set_fact:
+    current_version: "{{ register_version.json['version'] | regex_replace('(\\d+\\.\\d+\\.\\d+)\\.(\\d+)', '\\1-\\2') }}"
+
+- block:
+    - name: Get list of all drivers
+      win_command: driverquery /V
+      changed_when: false
+      register: driver_list
+
+    - name: Check if Red Hat certificate is not already installed
+      win_shell: 'Get-ChildItem -Path Cert:\LocalMachine\TrustedPublisher'
+      changed_when: false
+      register: cert_check
+
+    - name: 'Download virtIO {{ virtio_version }}'
+      win_get_url:
+        url: 'https://fedorapeople.org/groups/virt/virtio-win/direct-downloads/archive-virtio/virtio-win-{{ virtio_version }}/virtio-win.iso'
+        force: false
+        dest: "{{ ansible_env.TEMP }}\\virtio-win-{{ virtio_version }}.iso"
+        follow_redirects: all
+
+    - name: 'Mount virtIO {{ virtio_version }}'
+      win_disk_image:
+        image_path: "{{ ansible_env.TEMP }}\\virtio-win-{{ virtio_version }}.iso"
+      register: win_disk_image
+
+    - name: Set the virtio_win_iso_path and virtio_win_virtio_path
+      set_fact:
+        virtio_win_iso_path: '{{ win_disk_image.mount_path }}'
+        virtio_win_virtio_path: "{{ win_disk_image.mount_path + '\\virtio' if virtio_win_ovirt else win_disk_image.mount_path }}"
+
+    - block:
+        - name: Export Cert from qxldod
+          win_shell: "{{ shell | join(' ')  }}"
+          vars:
+            shell:
+              - '$cert = (Get-AuthenticodeSignature "{{ virtio_win_virtio_path }}\qxldod\{{ virtio_driver_directory }}\amd64\qxldod.cat").SignerCertificate;'
+              - '[System.IO.File]::WriteAllBytes("{{ ansible_env.TEMP }}\redhat_qxldod.cer",'
+              - '$cert.Export([System.Security.Cryptography.X509Certificates.X509ContentType]::Cert));'
+
+        - name: Export Cert from balloon
+          win_shell: "{{ shell | join(' ')  }}"
+          vars:
+            shell:
+              - '$cert = (Get-AuthenticodeSignature "{{ virtio_win_virtio_path }}\Balloon\{{ virtio_driver_directory }}\amd64\blnsvr.exe").SignerCertificate;'
+              - '[System.IO.File]::WriteAllBytes("{{ ansible_env.TEMP }}\redhat_balloon.cer",'
+              - '$cert.Export([System.Security.Cryptography.X509Certificates.X509ContentType]::Cert));'
+
+        - name: Install RH certificate (qxldod) to TrustedPublisher certificate store
+          win_command: 'certutil.exe -f -addstore "TrustedPublisher" {{ ansible_env.TEMP }}\redhat_qxldod.cer'
+
+        - name: Install RH certificate (Balloon) to TrustedPublisher certificate store
+          win_command: 'certutil.exe -f -addstore "TrustedPublisher" {{ ansible_env.TEMP }}\redhat_balloon.cer'
+
+      when: cert_check.stdout is not search("Red Hat")
+
+    - name: Install the Virtio Network Driver (netkvm)
+      win_command: "pnputil -i -a \"{{ path }}\\*.inf\""
+      when: driver_list.stdout is not search("netkvm")
+      vars:
+        path: "{{ virtio_win_virtio_path }}\\NetKVM\\{{ virtio_driver_directory }}\\{{ ansible_env.PROCESSOR_ARCHITECTURE | lower }}"
+
+    - name: Install the Virtio Block Driver (viostor)
+      win_command: "pnputil -i -a \"{{ path }}\\*.inf\""
+      when: driver_list.stdout is not search("viostor")
+      vars:
+        path: "{{ virtio_win_virtio_path }}\\viostor\\{{ virtio_driver_directory }}\\{{ ansible_env.PROCESSOR_ARCHITECTURE | lower }}"
+
+    - name: Install the QXL Graphics Driver (qxldod)
+      win_command: "pnputil -i -a \"{{ path }}\\*.inf\""
+      when: driver_list.stdout is not search("qxldod")
+      vars:
+        path: "{{ virtio_win_virtio_path }}\\qxldod\\{{ virtio_driver_directory }}\\{{ ansible_env.PROCESSOR_ARCHITECTURE | lower }}"
+
+    - name: Install the Balloon Driver (Balloon)
+      win_command: >
+        "pnputil -i -a \"{{ path }}\\*.inf\""
+      when: driver_list.stdout is not search("balloon")
+      vars:
+        path: "{{ virtio_win_virtio_path }}\\Balloon\\{{ virtio_driver_directory }}\\{{ ansible_env.PROCESSOR_ARCHITECTURE | lower }}"
+
+    - name: Install Virtio RNG driver (viorng)
+      win_command: "pnputil -i -a \"{{ path }}\\*.inf\""
+      when: driver_list.stdout is not search("viorng")
+      vars:
+        path: "{{ virtio_win_virtio_path }}\\viorng\\{{ virtio_driver_directory }}\\{{ ansible_env.PROCESSOR_ARCHITECTURE | lower }}"
+
+    - name: Install Virtio serial driver (vioserial)
+      win_command: "pnputil -i -a \"{{ path }}\\*.inf\""
+      when: driver_list.stdout is not search("vioser")
+      vars:
+        path: "{{ virtio_win_virtio_path }}\\vioserial\\{{ virtio_driver_directory }}\\{{ ansible_env.PROCESSOR_ARCHITECTURE | lower }}"
+
+    - name: Install Virtio Input driver (vioinput)
+      win_command: "pnputil -i -a \"{{ path }}\\*.inf\""
+      when: driver_list.stdout is not search("vioinput")
+      vars:
+        path: "{{ virtio_win_virtio_path }}\\vioinput\\{{ virtio_driver_directory }}\\{{ ansible_env.PROCESSOR_ARCHITECTURE | lower }}"
+
+    - name: Install pvpanic device driver (pvpanic)
+      win_command: "pnputil -i -a \"{{ path }}\\*.inf\""
+      when: driver_list.stdout is not search("pvpanic")
+      vars:
+        path: "{{ virtio_win_virtio_path }}\\pvpanic\\{{ virtio_driver_directory }}\\{{ ansible_env.PROCESSOR_ARCHITECTURE | lower }}"
+
+  always:
+    - name: Unmount
+      win_disk_image:
+        image_path: "{{ ansible_env.TEMP }}\\virtio-win-{{ virtio_version }}.iso"
+        state: absent
+      when: win_disk_image.mount_path is defined
+
+    - name: Delete downloaded
+      win_file:
+        path: '{{ item }}'
+        state: absent
+      with_items:
+        - "{{ ansible_env.TEMP }}\\redhat_balloon.cer"
+        - "{{ ansible_env.TEMP }}\\redhat_qxldod.cer"
+        - "{{ ansible_env.TEMP }}\\virtio-win-{{ virtio_version }}.iso"
+
+  when: ansible_os_family == 'Windows' and (ansible_virtio_version | default()) != virtio_version

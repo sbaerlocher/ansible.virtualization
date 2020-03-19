@@ -1,0 +1,13 @@
+---
+# defaults file for virtualbox_guest_additions
+
+# Here you can specify the version to be installed.
+# By default, the role itself searches for the latest version.
+virtualbox_guest_additions_version: '{{ current_version }}'
+
+# URL to download virtualbox guest additions.
+virtualbox_guest_additions_download_url: 'https://download.virtualbox.org/virtualbox/{{ virtualbox_guest_additions_version }}/VBoxGuestAdditions_{{ virtualbox_guest_additions_version }}.iso'
+
+# Path to temporarily store the virtualbox guest additions.
+# Windows: '{{ ansible_env.TEMP }}\VBoxGuestAdditions_{{ virtualbox_guest_additions_version }}.iso'
+virtualbox_guest_additions_iso_file: '{{ __virtualbox_guest_additions_iso_dest }}'

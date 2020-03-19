@@ -1,0 +1,23 @@
+---
+# tasks file for virtualbox
+
+- name: 'Debian : Add VirtualBox repo keys'
+  become: true
+  apt_key:
+    url: 'https://www.virtualbox.org/download/{{ item }}.asc'
+    state: present
+  with_items:
+    - oracle_vbox
+    - oracle_vbox_2016
+  register: result
+  until: result is succeeded
+
+- name: 'Debian : Add VirtualBox repo'
+  become: true
+  apt_repository:
+    repo: 'deb {{ virtualbox_repository }}/debian {{ ansible_distribution_release }} contrib'
+    state: present
+    filename: virtualbox
+    update_cache: true
+  register: result
+  until: result is succeeded

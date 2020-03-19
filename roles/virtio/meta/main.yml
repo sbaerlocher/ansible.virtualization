@@ -1,0 +1,18 @@
+---
+galaxy_info:
+  author: 'Simon Baerlocher (https://sbaerlocher.ch)'
+  description: 'This Ansible role installs the VirtIO driver and updates it also for new releases under Windows.'
+  license: MIT
+  min_ansible_version: 2.5
+  platforms:
+    - name: Windows
+      versions:
+        - all
+
+  galaxy_tags:
+    - drivers
+    - windows
+    - virtio
+    - spice
+
+dependencies: []

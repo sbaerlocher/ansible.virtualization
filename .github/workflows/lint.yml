@@ -1,0 +1,16 @@
+name: Lint
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install Yaml Lint
+        run: sudo pip3 install yamllint
+
+      - name: Run Yaml Lint
+        run: yamllint .

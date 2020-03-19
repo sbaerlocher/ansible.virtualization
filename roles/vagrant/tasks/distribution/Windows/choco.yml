@@ -1,0 +1,7 @@
+---
+# tasks file for vagrant
+
+- name: 'Choco : Install vagrant'
+  win_chocolatey:
+    name: vagrant
+    version: '{{ vagrant_version }}'

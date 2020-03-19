@@ -1,0 +1,18 @@
+---
+galaxy_info:
+  author: 'Simon Baerlocher (https://sbaerlocher.ch)'
+  description: 'Ansible galaxy role for installing VirtualBox guest additions on Windows images.'
+  license: MIT
+  min_ansible_version: 2.9
+  platforms:
+    - name: Windows
+      versions:
+        - all
+  galaxy_tags:
+    - windows
+    - virtualbox
+    - guest
+    - cloud
+    - multicloud
+
+dependencies: []

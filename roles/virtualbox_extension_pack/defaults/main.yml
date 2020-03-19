@@ -1,0 +1,13 @@
+---
+# defaults file for virtualbox_extension_pack
+
+# Here you can specify the version to be installed.
+# By default, the role itself searches for the latest version.
+virtualbox_extension_pack_version: '{{ current_version }}'
+
+# URL to download virtualbox extension pack.
+virtualbox_extension_pack_url: 'https://download.virtualbox.org/virtualbox/{{ current_version }}/Oracle_VM_VirtualBox_Extension_Pack-{{ current_version }}.vbox-extpack'
+
+# Path to temporarily store the virtualbox extension pack.
+# Linux: '/tmp/Oracle_VM_VirtualBox_Extension_Pack-{{ current_version }}.vbox-extpack'
+virtualbox_extension_pack_dest: '{{ __virtualbox_extension_pack_dest }}'

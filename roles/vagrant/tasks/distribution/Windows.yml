@@ -1,0 +1,19 @@
+---
+# tasks file for vagrant
+
+- name: 'Windows : check if choco exist'
+  win_stat:
+    path: "C:\\ProgramData\\Chocolatey\\bin\\choco.exe"
+  register: register_vagrant_choco_check
+
+- name: 'Windows : set install type choco'
+  set_fact:
+    vagrant_install_type: 'choco'
+  when: >
+    register_vagrant_choco_check.stat.exists and
+    not vagrant_force_package
+
+- name: 'Windows : include install type'
+  include_tasks: 'Windows/{{ var_filename }}.yml'
+  vars:
+    var_filename: "{{ vagrant_install_type | default('package') }}"

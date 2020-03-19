@@ -1,0 +1,8 @@
+---
+# tasks file for vagrant
+
+- name: 'Package : Install vagrant'
+  win_package:
+    path: https://releases.hashicorp.com/vagrant/{{ vagrant_version }}/vagrant_{{ vagrant_version }}_x86_64.msi
+    product_id: Vagrant
+    state: present

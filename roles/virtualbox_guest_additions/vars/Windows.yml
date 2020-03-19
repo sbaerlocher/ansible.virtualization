@@ -1,0 +1,4 @@
+---
+# vars file for virtualbox_guest_additions
+
+__virtualbox_guest_additions_iso_dest: '{{ ansible_env.TEMP }}\VBoxGuestAdditions_{{ virtualbox_guest_additions_version }}.iso'
