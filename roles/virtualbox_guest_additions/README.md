@@ -37,5 +37,5 @@ virtualbox_guest_additions_iso_file: '{{ __virtualbox_guest_additions_iso_dest }
 ```yml
 - hosts: all
   roles:
-    - sbaerlocher.virtualization.virtualbox_extension_pack
+    - sbaerlocher.virtualization.virtualbox_guest_additions
 ```
