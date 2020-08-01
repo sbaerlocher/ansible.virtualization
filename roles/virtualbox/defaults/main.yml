@@ -10,4 +10,4 @@ virtualbox_repository: 'https://download.virtualbox.org/virtualbox'
 
 # Version of Virtualbox that is to be installed.
 # By default, it chooses the latest version.
-virtualbox_packages: 'virtualbox-{{ virtualbox_version[:-2] }}'
+virtualbox_packages: "virtualbox-{{ virtualbox_version.split('.')[0] + '.' + virtualbox_version.split('.')[1] }}"
