@@ -5,8 +5,11 @@ and [human-readable changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## master
 
+## 0.0.3
+
 ### Fixed
 
+- Fixed the problem if the version number has more than 1 digit.
 - Fixed typo in virtualbox_guest_additions role README.md.
 
 ## 0.0.2
