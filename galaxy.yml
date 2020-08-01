@@ -1,14 +1,12 @@
 ---
 namespace: 'sbaerlocher'
 name: 'virtualization'
-version: 0.0.3
+version: 0.0.4
 readme: README.md
 authors:
   - 'Simon Baerlocher (https://sbaerlocher.ch)'
 description: 'Ansible Collection for virtualization.'
-license:
-  - MIT
-license_file: 'LICENSE'
+license: MIT
 tags:
   - virtualization
 dependencies: {}
