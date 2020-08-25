@@ -1,0 +1,33 @@
+---
+galaxy_info:
+  author: 'Simon Baerlocher (https://sbaerlocher.ch)'
+  description: 'Role for installing Qemu Guest Agent on Linux or Windows'
+  license: MIT
+  min_ansible_version: 2.9
+  platforms:
+    - name: EL
+      versions:
+        - 5
+        - 6
+    - name: Fedora
+      versions:
+        - 16
+        - 17
+        - 18
+    - name: Ubuntu
+      versions:
+        - precise
+        - quantal
+        - raring
+        - saucy
+    - name: Debian
+      versions:
+        - wheezy
+    - name: Windows
+      versions:
+        - all
+  galaxy_tags:
+    - system
+
+dependencies:
+  - role: arillso.repositories

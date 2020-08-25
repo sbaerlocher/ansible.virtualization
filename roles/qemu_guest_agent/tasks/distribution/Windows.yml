@@ -1,0 +1,16 @@
+---
+# tasks file for qemu_guest_agent
+
+- name: 'windows : include virtio role'
+  include_role:
+    name: sbaerlocher.virtualization.virtio
+  tags:
+    - packages
+
+- name: 'windows : install Qemu Guest Agent'
+  win_package:
+    path: "{{ virtio_win_iso_path }}\\guest-agent\\qemu-ga-x86_64.msi"
+    creates_path: "{{ ansible_env['ProgramFiles'] }}\\qemu-ga"
+  when: (ansible_virtio_version | default()) != virtio_version
+  tags:
+    - packages

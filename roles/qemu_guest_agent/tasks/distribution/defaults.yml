@@ -1,0 +1,8 @@
+---
+# tasks file for qemu_guest_agent
+
+- name: Message
+  debug:
+    msg: 'Your {{ ansible_system }} is not supported'
+  tags:
+    - packages
