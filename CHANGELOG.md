@@ -5,6 +5,12 @@ and [human-readable changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## master
 
+## 0.0.6
+
+### Added
+
+- Adding the Ansible Role qemu_guest_agent.
+
 ## 0.0.5
 
 ### Added

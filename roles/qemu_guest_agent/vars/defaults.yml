@@ -1,0 +1,5 @@
+---
+# vars file for qemu_guest_agent
+
+qemu_package: []
+qemu_guest_agent_service_name: []
