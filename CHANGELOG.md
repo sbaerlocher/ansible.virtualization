@@ -5,6 +5,12 @@ and [human-readable changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## master
 
+## 0.0.5
+
+### Added
+
+- Support for Microsoft Windows Server 2019 Essentials in the virtio role.
+
 ## 0.0.4
 
 ### Fixed
