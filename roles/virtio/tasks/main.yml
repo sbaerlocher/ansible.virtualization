@@ -1,25 +1,14 @@
 ---
 # tasks file for virtio
 
-- name: add OS specific variables
-  include_vars: '{{ item }}'
-  with_first_found:
-    - files:
-        - '{{ ansible_distribution }}-{{ ansible_distribution_version }}.yml'
-        - '{{ ansible_distribution }}.yml'
-        - '{{ ansible_os_family }}.yml'
-        - 'defaults.yml'
-      paths:
-        - 'vars'
-
-- name: Search current virtualbox version
+- name: Search current virtio version
   uri:
     url: https://release-monitoring.org/api/project/84598
     return_content: true
   register: register_version
   delegate_to: localhost
 
-- name: Set current virtualbox version
+- name: Set current virtio version
   set_fact:
     current_version: "{{ register_version.json['version'] | regex_replace('(\\d+\\.\\d+\\.\\d+)\\.(\\d+)', '\\1-\\2') }}"
 
@@ -130,7 +119,7 @@
       win_disk_image:
         image_path: "{{ ansible_env.TEMP }}\\virtio-win-{{ virtio_version }}.iso"
         state: absent
-      when: win_disk_image.mount_path is defined
+      when: win_disk_image.mount_path is defined and virtio_block_always
 
     - name: Delete downloaded
       win_file:
@@ -140,5 +129,6 @@
         - "{{ ansible_env.TEMP }}\\redhat_balloon.cer"
         - "{{ ansible_env.TEMP }}\\redhat_qxldod.cer"
         - "{{ ansible_env.TEMP }}\\virtio-win-{{ virtio_version }}.iso"
+      when: virtio_block_always
 
   when: ansible_os_family == 'Windows' and (ansible_virtio_version | default()) != virtio_version
