@@ -5,6 +5,13 @@ and [human-readable changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## master
 
+## 0.0.7
+
+### Changed
+
+- Adaptation to the role qemu_guest_agent and virtio so they harmonize with each other.
+- Adaptation of the method to determine which windows version it is.
+
 ## 0.0.6
 
 ### Added
