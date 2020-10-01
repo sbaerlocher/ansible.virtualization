@@ -44,7 +44,7 @@
 
     - name: Ensure virtualbox certs installed
       win_certificate_store:
-        path: '{{ register_disk_image.mount_path }}cert\{{ item }}'
+        path: '{{ register_disk_image.mount_paths[0] }}cert\{{ item }}'
         state: present
         key_storage: machine
         store_name: TrustedPublisher
