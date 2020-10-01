@@ -9,8 +9,8 @@ and [human-readable changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Fixed
 
-- Fixes mount_path in virtualbox_guest_additions
-- Fixes #12 virtualbox_extension_pack freeze because of new license hash
+- Fixes mount_path in virtualbox_guest_additions.
+- Fixes #12 virtualbox_extension_pack freeze because of new license hash.
 
 ## 0.0.7
 
