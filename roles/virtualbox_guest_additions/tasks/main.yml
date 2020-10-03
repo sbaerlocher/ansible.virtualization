@@ -54,7 +54,7 @@
 
     - name: Ensure virtualbox guest additions installed
       win_package:
-        path: '{{ register_disk_image.mount_path }}VBoxWindowsAdditions.exe'
+        path: '{{ register_disk_image.mount_paths[0] }}VBoxWindowsAdditions.exe'
         creates_path: 'C:\Program files\Oracle\VirtualBox'
         arguments:
           - /S
