@@ -11,6 +11,7 @@
 - name: Set current virtio version
   set_fact:
     current_version: "{{ register_version.json['version'] | regex_replace('(\\d+\\.\\d+\\.\\d+)\\.(\\d+)', '\\1-\\2') }}"
+  when: not ansible_check_mode
 
 - block:
     - name: Get list of all drivers
@@ -131,4 +132,4 @@
         - "{{ ansible_env.TEMP }}\\virtio-win-{{ virtio_version }}.iso"
       when: virtio_block_always
 
-  when: ansible_os_family == 'Windows' and (ansible_virtio_version | default()) != virtio_version
+  when: not ansible_check_mode and ansible_os_family == 'Windows' and (ansible_virtio_version | default()) != virtio_version

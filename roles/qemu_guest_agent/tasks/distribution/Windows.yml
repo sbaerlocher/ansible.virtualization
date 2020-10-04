@@ -11,6 +11,7 @@
     - name: 'windows : install Qemu Guest Agent'
       win_package:
         path: "{{ virtio_win_iso_path }}\\guest-agent\\qemu-ga-x86_64.msi"
+  when: not ansible_check_mode
 
   always:
     - name: 'windows : unmount'

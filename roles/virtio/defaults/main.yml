@@ -3,7 +3,7 @@
 
 # here you can specify the version to be installed.
 # By default, the role itself searches for the latest version.
-virtio_version: '{{ current_version }}'
+virtio_version: '{{ current_version | default(0) }}'
 
 # Variable to check if it is a virtual machine on an Ovirt Cluster.
 virtio_win_ovirt: false
