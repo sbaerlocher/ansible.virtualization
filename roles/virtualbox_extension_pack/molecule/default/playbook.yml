@@ -2,4 +2,5 @@
 - name: Converge
   hosts: all
   roles:
+    - sbaerlocher.virtualization.virtualbox
     - sbaerlocher.virtualization.virtualbox_extension_pack
