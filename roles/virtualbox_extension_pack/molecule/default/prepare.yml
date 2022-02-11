@@ -1,0 +1,8 @@
+---
+- name: Prepare
+  hosts: all
+  become: true
+  tasks:
+    - apt:
+        update_cache: yes
+        name: apt-transport-https
